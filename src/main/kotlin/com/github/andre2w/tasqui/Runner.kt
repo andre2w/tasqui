@@ -7,7 +7,7 @@ class Runner {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val fileReader = FileReader()
+            val fileReader = JsonFileReader()
             val taskRepository = TaskRepository(fileReader)
             val console = Console()
 

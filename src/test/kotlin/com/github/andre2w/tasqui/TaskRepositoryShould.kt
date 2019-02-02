@@ -3,26 +3,44 @@ package com.github.andre2w.tasqui
 import com.github.salomonbrys.kotson.jsonArray
 import com.github.salomonbrys.kotson.jsonObject
 import com.google.gson.JsonObject
+import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class TaskRepositoryShould {
 
+    private val jsonFileReader = mockk<JsonFileReader>(relaxed = true)
+    private val taskRepository = TaskRepository(jsonFileReader)
+    private val task1 = Task(1, "Keep Summer safe")
+    private val task2 = Task(2, "Buy szechuan sauce")
+
+    @BeforeEach
+    internal fun setUp() {
+        clearMocks(jsonFileReader)
+    }
+
     @Test
     internal fun `append task to json`() {
-        val fileReader = mockk<FileReader>(relaxed = true)
-        val task1 = Task(1, "Keep Summer safe")
-        val task2 = Task(2, "Buy szechuan sauce")
-        every { fileReader.read() } returns jsonArray(taskToJson(task1)).toString()
+        every { jsonFileReader.read() } returns jsonArray(taskToJson(task1))
 
-        TaskRepository(fileReader).add(task2)
+        taskRepository.add(task2)
 
-        val expected = jsonArray(taskToJson(task1), taskToJson(task2)).toString()
+        val expected = jsonArray(taskToJson(task1), taskToJson(task2))
         verify {
-            fileReader.save(expected)
+            jsonFileReader.save(expected)
         }
+    }
+
+    @Test
+    internal fun `return next id`() {
+        every { jsonFileReader.read() } returns jsonArray(taskToJson(task1), taskToJson(task2))
+
+        assertEquals(3, taskRepository.nextId())
     }
 
     private fun taskToJson(task: Task) : JsonObject {

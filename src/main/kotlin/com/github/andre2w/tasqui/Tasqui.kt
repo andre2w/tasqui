@@ -13,7 +13,6 @@ class Add(private val taskRepository: TaskRepository) : CliktCommand("Add new ta
 
     override fun run() {
         taskRepository.add(Task(taskRepository.nextId(), description))
-
     }
 }
 

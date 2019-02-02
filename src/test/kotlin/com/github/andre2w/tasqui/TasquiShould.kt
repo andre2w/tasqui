@@ -7,7 +7,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class CommandsShould {
+class TasquiShould {
 
     private val taskText = "Keep Summer safe"
     private val task = Task(1, taskText)

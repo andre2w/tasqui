@@ -1,22 +1,22 @@
 package com.github.andre2w.tasqui
 
 import com.github.salomonbrys.kotson.fromJson
+import com.github.salomonbrys.kotson.get
 import com.github.salomonbrys.kotson.jsonObject
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 
-class TaskRepository(private val fileReader: FileReader) {
+class TaskRepository(private val jsonFileReader: JsonFileReader) {
     fun add(task: Task) {
-        val gson = Gson()
-        val tasks = gson.fromJson<JsonArray>(fileReader.read())
+        val tasks = jsonFileReader.read() as JsonArray
         tasks.add(task.toJson())
-        fileReader.save(gson.toJson(tasks))
+        jsonFileReader.save(tasks)
     }
 
     fun nextId(): Int {
-        val tasks = Gson().fromJson<List<Task>>(fileReader.read())
-        return (tasks.map { it.id }.max() ?: 0) + 1
+        val tasks = jsonFileReader.read() as JsonArray
+        return (tasks.map { it["id"].asInt }.max() ?: 0) + 1
     }
 
     fun all(): List<Task> {
