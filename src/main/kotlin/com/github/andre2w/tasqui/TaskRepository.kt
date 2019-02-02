@@ -1,10 +1,9 @@
 package com.github.andre2w.tasqui
 
-import com.github.salomonbrys.kotson.fromJson
 import com.github.salomonbrys.kotson.get
 import com.github.salomonbrys.kotson.jsonObject
-import com.google.gson.Gson
 import com.google.gson.JsonArray
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 
 class TaskRepository(private val jsonFileReader: JsonFileReader) {
@@ -20,7 +19,8 @@ class TaskRepository(private val jsonFileReader: JsonFileReader) {
     }
 
     fun all(): List<Task> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val tasks = jsonFileReader.read() as JsonArray
+        return tasks.map { it.toTask() }.toList()
     }
 
     private fun Task.toJson() : JsonObject {
@@ -29,4 +29,6 @@ class TaskRepository(private val jsonFileReader: JsonFileReader) {
             "description" to this.description
         )
     }
+
+    private fun JsonElement.toTask() = Task(this["id"].asInt, this["description"].asString)
 }

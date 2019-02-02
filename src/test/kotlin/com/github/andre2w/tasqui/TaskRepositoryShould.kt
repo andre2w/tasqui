@@ -18,6 +18,7 @@ internal class TaskRepositoryShould {
     private val taskRepository = TaskRepository(jsonFileReader)
     private val task1 = Task(1, "Keep Summer safe")
     private val task2 = Task(2, "Buy szechuan sauce")
+    private val jsonTasks = listOf(taskToJson(task1), taskToJson(task2))
 
     @BeforeEach
     internal fun setUp() {
@@ -38,9 +39,18 @@ internal class TaskRepositoryShould {
 
     @Test
     internal fun `return next id`() {
-        every { jsonFileReader.read() } returns jsonArray(taskToJson(task1), taskToJson(task2))
+        every { jsonFileReader.read() } returns jsonArray(jsonTasks)
 
         assertEquals(3, taskRepository.nextId())
+    }
+
+    @Test
+    internal fun `return all tasks stored`() {
+        every { jsonFileReader.read() } returns jsonArray(jsonTasks)
+
+        val tasks = taskRepository.all()
+
+        assertEquals(listOf(task1, task2), tasks)
     }
 
     private fun taskToJson(task: Task) : JsonObject {
