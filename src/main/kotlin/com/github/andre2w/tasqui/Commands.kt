@@ -3,6 +3,11 @@ package com.github.andre2w.tasqui
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
 
+class Tasqui : CliktCommand() {
+    override fun run() = Unit
+
+}
+
 class Add(private val taskRepository: TaskRepository) : CliktCommand("Add new task") {
     private val description by argument("description", "Task description")
 
@@ -19,7 +24,7 @@ class ListTasks(private val taskRepository: TaskRepository, private val console:
 
     override fun run() {
         val tasks = taskRepository.all()
-        
+
         tasks.map { "${it.id} - ${it.description}" }
             .forEach(console::print)
     }
