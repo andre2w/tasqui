@@ -10,5 +10,18 @@ class Add(private val taskRepository: TaskRepository) : CliktCommand("Add new ta
         taskRepository.add(Task(taskRepository.nextId(), description))
 
     }
+}
+
+// Kotlin don't let me use List as the class name
+class ListTasks(private val taskRepository: TaskRepository, private val console: Console)
+    : CliktCommand("Prints all tasks") {
+
+
+    override fun run() {
+        val tasks = taskRepository.all()
+        
+        tasks.map { "${it.id} - ${it.description}" }
+            .forEach(console::print)
+    }
 
 }

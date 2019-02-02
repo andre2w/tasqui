@@ -9,4 +9,8 @@ class TaskRepository {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    fun all(): List<Task> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }
