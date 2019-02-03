@@ -7,7 +7,6 @@ import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -29,7 +28,7 @@ internal class TaskRepositoryShould {
     internal fun `append task to json`() {
         every { jsonFileReader.read() } returns jsonArray(taskToJson(task1))
 
-        taskRepository.add(task2)
+        taskRepository.save(task2)
 
         val expected = jsonArray(taskToJson(task1), taskToJson(task2))
         verify {
@@ -51,6 +50,17 @@ internal class TaskRepositoryShould {
         val tasks = taskRepository.all()
 
         assertEquals(listOf(task1, task2), tasks)
+    }
+
+    @Test
+    internal fun `delete task from json`() {
+        every { jsonFileReader.read() } returns jsonArray(jsonTasks)
+
+        taskRepository.delete(1)
+
+        verify {
+            jsonFileReader.save(jsonArray(taskToJson(task2)))
+        }
     }
 
     private fun taskToJson(task: Task) : JsonObject {

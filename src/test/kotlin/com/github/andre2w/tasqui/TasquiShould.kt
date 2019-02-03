@@ -1,5 +1,6 @@
 package com.github.andre2w.tasqui
 
+import com.github.salomonbrys.kotson.jsonArray
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -25,7 +26,7 @@ class TasquiShould {
         Add(taskRepository).main(arrayOf(taskText))
 
         verify {
-            taskRepository.add(task)
+            taskRepository.save(task)
         }
     }
 
@@ -38,6 +39,15 @@ class TasquiShould {
 
         verify {
             console.print("${task.id} - ${task.description}")
+        }
+    }
+
+    @Test
+    internal fun `delete task from list`() {
+        Delete(taskRepository).main(arrayOf(task.id.toString()))
+
+        verify {
+            taskRepository.delete(task.id)
         }
     }
 }
