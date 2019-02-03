@@ -30,7 +30,7 @@ class TaskRepository(private val jsonFileReader: JsonFileReader) {
         val updatedTasks = tasks
             .filter { it["id"].asInt != id }
             .toJsonArray()
-        
+
         jsonFileReader.save(updatedTasks)
     }
 

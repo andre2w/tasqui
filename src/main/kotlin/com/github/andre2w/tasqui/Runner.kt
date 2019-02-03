@@ -12,7 +12,7 @@ class Runner {
             val console = Console()
 
             Tasqui()
-                .subcommands(Add(taskRepository),ListTasks(taskRepository, console))
+                .subcommands(Add(taskRepository),Tasks(taskRepository, console), Delete(taskRepository))
                 .main(args)
         }
     }

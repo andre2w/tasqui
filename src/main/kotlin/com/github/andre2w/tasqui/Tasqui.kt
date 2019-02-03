@@ -8,7 +8,6 @@ import com.github.ajalt.clikt.parameters.types.int
 
 class Tasqui : CliktCommand() {
     override fun run() = Unit
-
 }
 
 class Add(private val taskRepository: TaskRepository) : CliktCommand("Add new task") {
@@ -20,7 +19,7 @@ class Add(private val taskRepository: TaskRepository) : CliktCommand("Add new ta
 }
 
 // Kotlin don't let me use List as the class name
-class ListTasks(private val taskRepository: TaskRepository, private val console: Console)
+class Tasks(private val taskRepository: TaskRepository, private val console: Console)
     : CliktCommand("Prints all tasks") {
 
     override fun run() {
@@ -37,5 +36,4 @@ class Delete(private val taskRepository: TaskRepository) : CliktCommand("Delete 
     override fun run() {
          taskRepository.delete(taskId)
     }
-
 }

@@ -1,6 +1,5 @@
 package com.github.andre2w.tasqui
 
-import com.github.salomonbrys.kotson.jsonArray
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -35,7 +34,7 @@ class TasquiShould {
         val console = mockk<Console>(relaxed = true)
         every { taskRepository.all() } returns listOf(task)
 
-        ListTasks(taskRepository, console).main(emptyArray())
+        Tasks(taskRepository, console).main(emptyArray())
 
         verify {
             console.print("${task.id} - ${task.description}")
