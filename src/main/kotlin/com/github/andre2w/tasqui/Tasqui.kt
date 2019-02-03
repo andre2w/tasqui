@@ -20,12 +20,10 @@ class Add(private val taskRepository: TaskRepository) : CliktCommand("Add new ta
 class ListTasks(private val taskRepository: TaskRepository, private val console: Console)
     : CliktCommand("Prints all tasks") {
 
-
     override fun run() {
         val tasks = taskRepository.all()
 
         tasks.map { "${it.id} - ${it.description}" }
             .forEach(console::print)
     }
-
 }

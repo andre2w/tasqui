@@ -20,7 +20,6 @@ class TasquiShould {
 
     @Test
     internal fun `create task from argument`() {
-
         every { taskRepository.nextId() } returns 1
 
         Add(taskRepository).main(arrayOf(taskText))
