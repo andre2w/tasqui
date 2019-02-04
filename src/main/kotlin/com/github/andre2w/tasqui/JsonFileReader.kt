@@ -10,8 +10,20 @@ import java.nio.file.Paths
 
 class JsonFileReader {
 
-    private val path: Path = Paths.get(System.getProperty("user.dir") + "/tasks.json")
+    private val path: Path
     private val gson = Gson()
+
+    init {
+        initializeFolder()
+        path = Paths.get(System.getProperty("user.home") + "/.tasqui/tasks.json")
+    }
+
+    private fun initializeFolder() {
+        val tasquiFolder = Paths.get(System.getProperty("user.home") + "/.tasqui")
+        if (!Files.exists(tasquiFolder)) {
+            Files.createDirectories(tasquiFolder)
+        }
+    }
 
     fun save(text: JsonElement) {
         val tasksJson = gson.toJson(text)
