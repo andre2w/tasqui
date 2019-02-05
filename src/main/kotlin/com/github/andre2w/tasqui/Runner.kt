@@ -8,7 +8,7 @@ class Runner {
         @JvmStatic
         fun main(args: Array<String>) {
             val fileReader = JsonFileReader()
-            val taskRepository = TaskRepository(fileReader)
+            val taskRepository = LocalFileTaskRepository(fileReader)
             val console = Console()
 
             Tasqui()
