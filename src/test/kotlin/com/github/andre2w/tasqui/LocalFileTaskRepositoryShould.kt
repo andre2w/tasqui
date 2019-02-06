@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class TaskRepositoryShould {
+internal class LocalFileTaskRepositoryShould {
 
     private val jsonFileReader = mockk<JsonFileReader>(relaxed = true)
-    private val taskRepository = TaskRepository(jsonFileReader)
+    private val taskRepository = LocalFileTaskRepository(jsonFileReader)
     private val task1 = Task(1, "Keep Summer safe")
     private val task2 = Task(2, "Buy szechuan sauce")
     private val jsonTasks = listOf(taskToJson(task1), taskToJson(task2))

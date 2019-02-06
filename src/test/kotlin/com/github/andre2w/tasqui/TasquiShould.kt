@@ -11,7 +11,7 @@ class TasquiShould {
 
     private val taskText = "Keep Summer safe"
     private val task = Task(1, taskText)
-    private val taskRepository = mockk<TaskRepository>(relaxed = true)
+    private val taskRepository = mockk<LocalFileTaskRepository>(relaxed = true)
 
     @BeforeEach
     internal fun setUp() {

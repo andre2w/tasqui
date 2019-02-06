@@ -7,7 +7,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 
-class TaskRepository(private val jsonFileReader: JsonFileReader) {
+class LocalFileTaskRepository(private val jsonFileReader: JsonFileReader) {
 
     private val tasks: JsonArray
         get() = jsonFileReader.read() as JsonArray
