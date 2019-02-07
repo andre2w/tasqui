@@ -7,17 +7,25 @@ import software.amazon.awssdk.services.dynamodb.model.PutItemRequest
 class DynamoDbTaskRepository(private val dynamoDbClient: DynamoDbClient) : TaskRepository {
 
     override fun save(task: Task) {
-        val item = mapOf(
-            "task_id" to AttributeValue.builder().n(task.id.toString()).build(),
-            "description" to AttributeValue.builder().s(task.description).build()
-        )
 
         dynamoDbClient.putItem(
             PutItemRequest.builder()
                 .tableName("tasqui")
-                .item(item)
+                .item(task.toAttributeMap())
                 .conditionExpression("attribute_not_exists(task_id)")
                 .build())
     }
+
+    private fun Task.toAttributeMap() : Map<String, AttributeValue> {
+        return mapOf(
+            "task_id" to id.toAttributeValue(),
+            "description" to description.toAttributeValue()
+        )
+    }
+
+    private fun Int.toAttributeValue() = AttributeValue.builder().n(this.toString()).build()
+
+    private fun String.toAttributeValue() = AttributeValue.builder().s(this).build()
+
 
 }
