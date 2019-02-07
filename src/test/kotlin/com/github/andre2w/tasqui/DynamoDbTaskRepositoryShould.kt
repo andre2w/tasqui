@@ -18,6 +18,17 @@ class DynamoDbTaskRepositoryShould {
             .endpointOverride(URI.create(endpoint))
             .build() ?: throw IllegalStateException()
 
+        val tableExists = dynamoDbClient.listTables()
+            .tableNames()
+            .contains("tasqui")
+
+        if (tableExists) {
+            dynamoDbClient.deleteTable(DeleteTableRequest
+                .builder()
+                .tableName("tasqui")
+                .build())
+        }
+
         dynamoDbClient.createTable { builder ->
             builder.tableName("tasqui")
 
