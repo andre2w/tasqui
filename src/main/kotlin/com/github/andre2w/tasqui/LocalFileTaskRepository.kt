@@ -7,12 +7,12 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 
-class LocalFileTaskRepository(private val jsonFileReader: JsonFileReader) {
+class LocalFileTaskRepository(private val jsonFileReader: JsonFileReader) : TaskRepository {
 
     private val tasks: JsonArray
         get() = jsonFileReader.read() as JsonArray
 
-    fun save(task: Task) {
+    override fun save(task: Task) {
         val storedTasks = tasks
         storedTasks.add(task.toJson())
         jsonFileReader.save(storedTasks)
