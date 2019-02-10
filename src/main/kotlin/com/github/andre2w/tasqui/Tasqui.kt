@@ -16,7 +16,6 @@ class Add(private val localFileTaskRepository: LocalFileTaskRepository) : CliktC
     }
 }
 
-// Kotlin don't let me use List as the class name
 class Tasks(private val localFileTaskRepository: LocalFileTaskRepository, private val console: Console)
     : CliktCommand("Prints all tasks") {
 

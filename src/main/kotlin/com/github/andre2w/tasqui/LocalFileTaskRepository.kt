@@ -22,7 +22,7 @@ class LocalFileTaskRepository(private val jsonFileReader: JsonFileReader) : Task
         return (tasks.map { it["id"].asInt }.max() ?: 0) + 1
     }
 
-    fun all(): List<Task> {
+    override fun all(): List<Task> {
         return tasks.map { it.toTask() }.toList()
     }
 

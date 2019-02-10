@@ -37,7 +37,18 @@ class DynamoDBHelper(val dynamoDbClient: DynamoDbClient) {
         return Task.from(item)
     }
 
-    private fun setupTable() {
+    fun save(vararg tasks: Task) {
+        tasks.forEach {
+            dynamoDbClient.putItem(
+                PutItemRequest.builder()
+                    .tableName(tableName)
+                    .item(it.toAttributeMap())
+                    .conditionExpression("attribute_not_exists(task_id)")
+                    .build())
+        }
+    }
+
+    fun setupTable() {
         deleteTable()
         createTable()
     }
@@ -84,4 +95,11 @@ class DynamoDBHelper(val dynamoDbClient: DynamoDbClient) {
 
     private fun Task.Companion.from(item: MutableMap<String, AttributeValue>) =
         Task(item[primaryKey]!!.n().toInt(), item["description"]!!.s())
+
+    private fun Task.toAttributeMap() : Map<String, AttributeValue> {
+        return mapOf(
+            "task_id" to AttributeValue.builder().n(id.toString()).build(),
+            "description" to AttributeValue.builder().s(description).build()
+        )
+    }
 }
