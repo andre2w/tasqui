@@ -34,6 +34,9 @@ class DynamoDBHelper(val dynamoDbClient: DynamoDbClient) {
                 .build()
         ).item()
 
+        if (item.isEmpty())
+            throw ItemNotFoundInTable()
+
         return Task.from(item)
     }
 

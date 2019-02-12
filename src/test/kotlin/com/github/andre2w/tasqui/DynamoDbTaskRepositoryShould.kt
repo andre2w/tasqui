@@ -1,9 +1,11 @@
 package com.github.andre2w.tasqui
 
 import com.github.andre2w.tasqui.helpers.DynamoDBHelper
+import com.github.andre2w.tasqui.helpers.ItemNotFoundInTable
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class DynamoDbTaskRepositoryShould {
 
@@ -35,5 +37,17 @@ class DynamoDbTaskRepositoryShould {
         val tasks = dynamoDbTaskRepository.all()
 
         assertEquals(listOf(task2, task1), tasks)
+    }
+
+    @Test
+    internal fun `delete Task from the table`() {
+        val task = Task(1, "Task description")
+        dynamoDBHelper.save(task)
+
+        dynamoDbTaskRepository.delete(task.id)
+
+        assertThrows<ItemNotFoundInTable> {
+            dynamoDBHelper.findById(task.id.toString())
+        }
     }
 }

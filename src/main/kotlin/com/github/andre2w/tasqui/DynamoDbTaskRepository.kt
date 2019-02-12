@@ -8,6 +8,13 @@ class DynamoDbTaskRepository(private val dynamoDbClient: DynamoDbClient) : TaskR
 
     private val tableName = "tasqui"
 
+    override fun delete(id: Int) {
+        dynamoDbClient.deleteItem { delete ->
+            delete.tableName(tableName)
+            delete.key(mapOf("task_id" to id.toAttributeValue()))
+        }
+    }
+
     override fun all(): List<Task> {
         val scanResponse = dynamoDbClient.scan { scan ->
             scan.tableName(tableName)

@@ -26,7 +26,7 @@ class LocalFileTaskRepository(private val jsonFileReader: JsonFileReader) : Task
         return tasks.map { it.toTask() }.toList()
     }
 
-    fun delete(id: Int) {
+    override fun delete(id: Int) {
         val updatedTasks = tasks
             .filter { it["id"].asInt != id }
             .toJsonArray()
