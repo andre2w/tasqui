@@ -8,12 +8,12 @@ import java.net.URI
 
 class DynamoDBHelper(val dynamoDbClient: DynamoDbClient) {
 
+    private val primaryKey = "task_id"
+    private val tableName = "tasqui"
+
     init {
         setupTable()
     }
-
-    private val primaryKey = "task_id"
-    private val tableName = "tasqui"
 
     companion object {
 
@@ -43,7 +43,7 @@ class DynamoDBHelper(val dynamoDbClient: DynamoDbClient) {
                 PutItemRequest.builder()
                     .tableName(tableName)
                     .item(it.toAttributeMap())
-                    .conditionExpression("attribute_not_exists(task_id)")
+                    .conditionExpression("attribute_not_exists($primaryKey)")
                     .build())
         }
     }
@@ -98,7 +98,7 @@ class DynamoDBHelper(val dynamoDbClient: DynamoDbClient) {
 
     private fun Task.toAttributeMap() : Map<String, AttributeValue> {
         return mapOf(
-            "task_id" to AttributeValue.builder().n(id.toString()).build(),
+            primaryKey to AttributeValue.builder().n(id.toString()).build(),
             "description" to AttributeValue.builder().s(description).build()
         )
     }

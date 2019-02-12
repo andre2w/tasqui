@@ -34,6 +34,6 @@ class DynamoDbTaskRepositoryShould {
 
         val tasks = dynamoDbTaskRepository.all()
 
-        assertEquals(tasks, listOf(task1, task2))
+        assertEquals(listOf(task2, task1), tasks)
     }
 }

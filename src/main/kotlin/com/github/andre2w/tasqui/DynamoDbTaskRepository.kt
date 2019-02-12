@@ -6,10 +6,11 @@ import software.amazon.awssdk.services.dynamodb.model.PutItemRequest
 
 class DynamoDbTaskRepository(private val dynamoDbClient: DynamoDbClient) : TaskRepository {
 
+    private val tableName = "tasqui"
+
     override fun all(): List<Task> {
         val scanResponse = dynamoDbClient.scan { scan ->
-            scan.tableName("tasqui")
-            scan.limit(1)
+            scan.tableName(tableName)
         }
 
         return scanResponse.items().map { it.toTask() }
@@ -18,7 +19,7 @@ class DynamoDbTaskRepository(private val dynamoDbClient: DynamoDbClient) : TaskR
     override fun save(task: Task) {
         dynamoDbClient.putItem(
             PutItemRequest.builder()
-                .tableName("tasqui")
+                .tableName(tableName)
                 .item(task.toAttributeMap())
                 .conditionExpression("attribute_not_exists(task_id)")
                 .build())
@@ -36,5 +37,5 @@ class DynamoDbTaskRepository(private val dynamoDbClient: DynamoDbClient) : TaskR
     private fun String.toAttributeValue() = AttributeValue.builder().s(this).build()
 
     private fun MutableMap<String, AttributeValue>.toTask() =
-        Task(this["id"]!!.n().toInt(), this["description"]!!.s() )
+        Task(this["task_id"]!!.n().toInt(), this["description"]!!.s() )
 }
