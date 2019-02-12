@@ -50,4 +50,21 @@ class DynamoDbTaskRepositoryShould {
             dynamoDBHelper.findById(task.id.toString())
         }
     }
+
+    @Test
+    internal fun `retrieve the last inserted id plus one`() {
+        val task = Task(1, "Task description")
+        dynamoDBHelper.save(task)
+
+        val nextId = dynamoDbTaskRepository.nextId()
+
+        assertEquals(2, nextId)
+    }
+
+    @Test
+    internal fun `first id should be 1`() {
+        val nextId = dynamoDbTaskRepository.nextId()
+
+        assertEquals(1, nextId)
+    }
 }

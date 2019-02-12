@@ -18,7 +18,7 @@ class LocalFileTaskRepository(private val jsonFileReader: JsonFileReader) : Task
         jsonFileReader.save(storedTasks)
     }
 
-    fun nextId(): Int {
+    override fun nextId(): Int {
         return (tasks.map { it["id"].asInt }.max() ?: 0) + 1
     }
 

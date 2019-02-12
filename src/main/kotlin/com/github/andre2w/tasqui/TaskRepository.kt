@@ -4,4 +4,5 @@ interface TaskRepository {
     fun save(task: Task)
     fun all(): List<Task>
     fun delete(id: Int)
+    fun nextId(): Int
 }
