@@ -23,6 +23,7 @@ class Tasks(private val taskRepository: TaskRepository, private val console: Con
         val tasks = taskRepository.all()
 
         tasks.asReversed()
+            .sortedBy { it.id }
             .map { "${it.id} - ${it.description}" }
             .forEach(console::print)
     }
