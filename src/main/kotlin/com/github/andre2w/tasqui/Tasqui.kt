@@ -8,29 +8,30 @@ class Tasqui : CliktCommand() {
     override fun run() = Unit
 }
 
-class Add(private val localFileTaskRepository: LocalFileTaskRepository) : CliktCommand("Add new task") {
+class Add(private val taskRepository: TaskRepository) : CliktCommand("Add new task") {
     private val description by argument("description", "Task description")
 
     override fun run() {
-        localFileTaskRepository.save(Task(localFileTaskRepository.nextId(), description))
+        taskRepository.save(Task(taskRepository.nextId(), description))
     }
 }
 
-class Tasks(private val localFileTaskRepository: LocalFileTaskRepository, private val console: Console)
+class Tasks(private val taskRepository: TaskRepository, private val console: Console)
     : CliktCommand("Prints all tasks") {
 
     override fun run() {
-        val tasks = localFileTaskRepository.all()
+        val tasks = taskRepository.all()
 
-        tasks.map { "${it.id} - ${it.description}" }
+        tasks.asReversed()
+            .map { "${it.id} - ${it.description}" }
             .forEach(console::print)
     }
 }
 
-class Delete(private val localFileTaskRepository: LocalFileTaskRepository) : CliktCommand("Delete a task") {
+class Delete(private val taskRepository: TaskRepository) : CliktCommand("Delete a task") {
     private val taskId by argument(help = "Id of the task to be deleted").int()
 
     override fun run() {
-         localFileTaskRepository.delete(taskId)
+         taskRepository.delete(taskId)
     }
 }

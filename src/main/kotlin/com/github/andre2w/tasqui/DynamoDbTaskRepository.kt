@@ -11,13 +11,14 @@ class DynamoDbTaskRepository(private val dynamoDbClient: DynamoDbClient) : TaskR
     override fun nextId(): Int {
         val items = dynamoDbClient.scan { scan ->
             scan.tableName(tableName)
-            scan.limit(1)
+            scan.attributesToGet("task_id")
         }.items()
 
-        if (items.isEmpty())
-            return 1
+        val lastId = items
+            .map { it["task_id"]!!.n().toInt()  }
+            .max() ?: 0
 
-        return items[0].toTask().id + 1
+        return lastId + 1
     }
 
     override fun delete(id: Int) {

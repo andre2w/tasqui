@@ -7,8 +7,7 @@ class Runner {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val fileReader = JsonFileReader()
-            val taskRepository = LocalFileTaskRepository(fileReader)
+            val taskRepository = DynamoDbTaskRepository(DynamoDBConnection.connect())
             val console = Console()
 
             Tasqui()
